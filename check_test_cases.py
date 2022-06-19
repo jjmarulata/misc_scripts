@@ -59,7 +59,7 @@ def main():
             if not os.path.isdir(path):
                 print(f"{path} is not a directory")
                 continue
-            files = [os.path.join(path, f) for f in os.listdir(path) if f.endswith(".js")]
+            files = [os.path.join(path, f) for f in os.listdir(path) if f.endswith(".ts")]
             check_files(files)
     elif args.files:
         check_files(args.files)
