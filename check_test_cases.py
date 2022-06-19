@@ -31,9 +31,11 @@ for path in path_list:
                     start = 1
                     then_at_line = line_number
                 elif start:
-                    if end_then.search(line) and not expects_in_then:
-                        print(f"No expects found in 'Then' statement on line {then_at_line + 1} in file:\n\t{path}/{each_file}\n")
-                        expects_in_then = 0
-                        start = 0
+                    if end_then.search(line):
+                        if expects_in_then:
+                            expects_in_then = 0
+                            start = 0
+                        else:
+                            print(f"No expects found in 'Then' statement on line {then_at_line + 1} in file:\n\t{path}/{each_file}\n")
                     elif expect_statement.search(line):
                         expects_in_then = 1
