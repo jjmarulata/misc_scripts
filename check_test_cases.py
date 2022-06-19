@@ -5,18 +5,15 @@ import sys
 import re
 import argparse
 
-#if len(sys.argv) < 2:
-    #print("The script requires at least one argument which is a direcotry with TypeScript files to check.")
-    #exit()
-#else:
-    #path_list = sys.argv[1:]
 def dir_path(path):
+    '''Chech if arguments passed with --directories option are valid paths'''
     if os.path.isdir(path):
         return path
     else:
         raise argparse.ArgumentTypeError(f"readable_dir:{path} is not a valid path")
 
 def file_path(file):
+    '''Check if arguments passed with --files are valid files'''
     if os.path.isfile(file):
         return file
     else:
@@ -25,12 +22,11 @@ def file_path(file):
 parser = argparse.ArgumentParser(description="Script to check if 'Then' statements in TypeScript files have expect statements.")
 group = parser.add_mutually_exclusive_group()
 group.add_argument('-d', '--directories', type=dir_path, nargs='+', help='One or more directories which hold TypeScript files using the .ts extension.')
-group.add_argument('-f', '--files', type=file_path, help='One or more TypeScript files.')
-
-
+group.add_argument('-f', '--files', type=file_path, nargs='+', help='One or more TypeScript files.')
 args = parser.parse_args()
 
 def check_files(files):
+    '''Check TypeScipts files for expect statements in the Then blocks'''
     then_at_line = 0
     expects_in_then = 0
     start = 0
@@ -55,6 +51,8 @@ def check_files(files):
                             print(f"No expects found in 'Then' statement on line {then_at_line + 1} in file:\n\t{each_file}\n")
                     elif expect_statement.search(line):
                         expects_in_then = 1
+
+
 def main():
     if args.directories:
         for path in args.directories:
